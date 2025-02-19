@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <title>Detail Page</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f0e7;
+            margin: 0;
+            padding: 10px;
+        }
+        header {
+            background-color: white;
+            color: black;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);   
+            margin-top: 20px;
+            margin: 50px;
+            padding: 10px;
+        }
+        .card-content {
+            padding: 20px;
+        }
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 0px;
+            color: #333;
+        }
+        .card p {
+            color: #666;
+            width: 100%;
+            margin-top: 5px;
+        }
+        .heading {
+            padding-left: 20px;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #ffffff;
+        }
+        td {
+            border: 1px solid #dddddd;
+            padding: 8px;            
+        }
+        .first-col {
+            width: 20%;
+            text-align: left;
+            font-weight: bold;
+        }   
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            float: right;
+        }
+
+        .action-buttons a {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .action-buttons i {
+            margin-right: 5px;
+        }
+        .btn-primary {
+            color: #007bff;
+            background-color: white;
+        }
+        .btn-danger {
+            color: #dc3545;
+            background-color: white;
+        }
+        .btn-secondary {
+            background-color: white;
+            color: #6c757d;
+        }
+        .btn-primary:hover, .btn-danger:hover, .btn-secondary:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-content">
+            <h2 style="text-align: center;">Known Diff Details</h2>
+            <div class="action-buttons">
+                <!-- Edit Button -->
+                <a href="" class="btn btn-primary" title="Edit">
+                    <i class="fa fa-edit"></i>
+                </a>
+                <!-- Delete Button -->
+                <a href="" class="btn btn-danger" title="Delete" 
+                    onclick="return confirm('Are you sure you want to delete this item?');">
+                    <i class="fa fa-trash"></i>
+                </a>
+                <!-- Back Button -->
+                <a href="{% url 'list_known_diff' %}" class="btn btn-secondary" title="Back">
+                    <i class="fa fa-arrow-left"></i>
+                </a>
+            </div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="first-col">Diff Name:</td>
+                        <td>{{known_diff_details.diff_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">Rule ID:</td>
+                        <td>{{known_diff_details.rule_id}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">Raised By:</td>
+                        <td>{{known_diff_details.raised_by_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">Assignee:</td>
+                        <td>{{known_diff_details.assigned_to_name}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">Chimera url:</td>
+                        <td>{{known_diff_details.diff_url}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">What's the issue?:</td>
+                        <td>{{known_diff_details.issue_description}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">1.0 Behaviour:</td>
+                        <td>{{known_diff_details.behaviour1}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">2.0 Behaviour:</td>
+                        <td>{{known_diff_details.behaviour2}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">FB:</td>
+                        <td>{{known_diff_details.fb}}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-col">Model Mapping:</td>
+                        <td>{{known_diff_details.model_mapping}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>  
+</body>
+</html>

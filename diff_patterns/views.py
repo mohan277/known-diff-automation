@@ -17,9 +17,10 @@ class ListKnownDiffAPIView(APIView):
     def get(self, request):
         known_diffs = list(
             KnownDiff.objects.filter(~Q(is_active=3)).annotate(
-                created_by_name=F("created_by__username")
+                created_by_name=F("created_by__username"),
+                assigned_to_name=F("assigned_to__username")
             ).values(
-                "id", "created_by_name",
+                "id", "created_by_name", "assigned_to_name",
                 "is_active", "rule_id", "diff_name"
             )
         )
@@ -82,22 +83,28 @@ class CreateKnownDiffAPIView(APIView):
 #             return render(request, self.template_name, {'recipe_form': form})
 
 
-# class DetailRecipeAPIView(APIView):
-#     permission_classes = [UserAuthentication]
-#     template_name = 'detail_recipe.html'
+class DetailKnownDiffAPIView(APIView):
+    permission_classes = [UserAuthentication]
+    template_name = 'detail_known_diff.html'
 
-#     def get(self, request, pk):
-#         recipe_obj = Recipe.objects.filter(id=pk).first()
+    def get(self, request, pk):
+        known_diff = KnownDiff.objects.filter(
+            ~Q(is_active=3), id=pk
+        ).first()
 
-        # for known_diff in known_diffs:
-        #     if known_diff.get("description"):
-        #         known_diff["description"] = json.loads(known_diff["description"])
-        #     if known_diff.get("diff_data"):
-        #         known_diff["diff_data"] = json.loads(known_diff["diff_data"])
-        # print("#"*100)
-        # print(known_diffs)
-        # print("#"*100)
-#         return render(request, self.template_name, {"recipe_obj": recipe_obj})
+        known_diff_details = {}
+
+        if known_diff:
+            description = json.loads(known_diff.description) if known_diff.description else {}
+            known_diff_details.update({
+                **description,
+                "diff_name": known_diff.diff_name,
+                "diff_url": known_diff.diff_url,
+                "rule_id": known_diff.rule_id,
+                "raised_by_name": known_diff.raised_by.username if known_diff.raised_by else "",
+                "assigned_to_name": known_diff.assigned_to.username if known_diff.assigned_to else ""
+            })
+        return render(request, self.template_name, {"known_diff_details": known_diff_details})
 
 
 # class DeleteRecipeAPIView(APIView):

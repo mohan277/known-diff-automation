@@ -1,8 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <title>Listing Page</title>
     <style>
         body {
@@ -22,107 +24,8 @@
             bottom: 10;
             width: 100%;
         }
-
-        .card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            margin: 10px;
-            transition: transform 0.3s;
-            width: 50%;
-        }
-
-        .card-content {
-            padding: 20px;
-        }
-
-        .card h2 {
-            margin-top: 0;
-            margin-bottom: 0px;
-            color: #333;
-        }
-
-        .card p {
-            color: #666;
-            width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            margin: 3px;
-        }
-
-        .crud-buttons {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 10px;
-        }
-
-        .crud-buttons button {
-            padding: 8px;
-            margin-right: 5px;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-        }
-
-        .crud-buttons button.edit {
-            background-color: #3498db;
-            color: #fff;
-        }
-
-        .crud-buttons button.delete {
-            background-color: #e74c3c;
-            color: #fff;
-        }
-
-        .crud-buttons button.green {
-            background-color: #04AA6D;
-            color: #fff;
-            padding: 10px;
-        }
-        .crud-buttons button.grey {
-            background-color: #6C757D;
-            color: #fff;
-            padding: 10px;
-        }
         .heading {
             padding-left: 20px;
-        }
-
-        .create-button {
-            background-color: #3ce76f;
-            padding: 8px;
-            margin-right: 5px;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-        }
-
-        .create-button a {
-            color: #fff;
-        }
-
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
-        #goToTopBtn {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 200px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            cursor: pointer;
-        }
-        #goToTopBtn:hover {
-            background-color: #0056b3;
         }
         .logout-button{
             float: right;
@@ -147,10 +50,23 @@
             text-align: left;
             padding: 8px;
         }
-        tr:nth-child(even) {
+        /* tr:nth-child(even) {
             background-color: #dddddd;
+        } */
+        .table-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
         }
-
+        .table-icon i {
+            font-size: 18px;
+            color: #C0C0C0;
+            text-decoration: none;
+        }
+        .table-icon i:hover {
+            color: #0f8a07;
+        }
     </style>
 </head>
 <body>
@@ -168,22 +84,39 @@
                         <th>Diff Name</th>
                         <th>Rule ID</th>
                         <th>Raised By</th>
+                        <th>Assignee</th>
                         <th>Satus</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for diff in known_diffs %}
                         <tr>
                             <td>{{ diff.id }}</td>
-                            <td>{{ diff.diff_name }}</td>
+                            <td>
+                                {{ diff.diff_name }}
+                            </td>
+                            <!-- <td>
+                                <a href="{% url 'detail_known_diff' diff.id %}" title="View Details">
+                                    {{ diff.diff_name }}
+                                </a>
+                            </td> -->
                             <td>{{ diff.rule_id }}</td>
                             <td>{{ diff.created_by_name }}</td>
+                            <td>{{ diff.assigned_to_name }}</td>
                             <td>
                                 {% if diff.is_active == 0 %}
-                                    Pending
+                                Pending
                                 {% elif diff.is_active == 1 %}
-                                    Approved
+                                Approved
                                 {% endif %}
+                            </td>
+                            <td>
+                                <div class="table-icon">
+                                    <a href="{% url 'detail_known_diff' diff.id %}" title="View Details">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
