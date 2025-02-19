@@ -23,29 +23,6 @@
             width: 100%;
         }
 
-        nav {
-            display: flex;
-            justify-content: center;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav li {
-            margin: 0 15px;
-            display: inline;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: black;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
         .card {
             background-color: #fff;
             border-radius: 8px;
@@ -158,80 +135,63 @@
             cursor: pointer;
             background-color: #f3f0e7;
         }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 90%;
+            margin-left: 60px;
+            background-color: #ffffff;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
 
     </style>
 </head>
 <body>
-    <button onclick="goToTop()" id="goToTopBtn" title="Go to Top">Top</button>
-    <header>
-        <h1>Known Diffs</h1>
-        <nav>
-            <ul>
-                <li style="display: flex; justify-content: space-between;">
-                    <div class="crud-buttons" style="margin-right: 10px;">
-                        <a href="{% url 'create_known_diff' %}">
-                            <button class="green" style="width: 125px;">Add Known Diff</button>
-                        </a>
-                    </div>
-                    <!-- <div class="crud-buttons" style="margin-left: 10px;">
-                        <a href="{% url 'dashboard' %}">
-                            <button class="grey" >Go to Dashboard</button>
-                        </a>
-                    </div> -->
-                </li>
-            </ul>
-        </nav>
-        <a href="{% url 'logout' %}"><button class="logout-button">Logout</button></a>
-    </header>
-    <div class="cards">
-        {% for recipe in recipes %}
-            <div class="card">
-                <div class="card-content">
-                    <h2>{{recipe.title}}</h2>
-                    <p>
-                        <strong>Meal Type: </strong>
-                        {% if recipe.meal_type == "vegetarian" %}
-                            Vegetarian
-                        {% else %}
-                            Non Vegetarian
-                        {% endif %}
-                    </p>
-                    <p><strong>Preparation Time(in hrs): </strong>{{recipe.prep_time}} hrs</p>
-                    <div class="crud-buttons">
-                        <a href="{% url 'detail_recipe' recipe.id %}">
-                            <button class="read">Read</button>
-                        </a>
-                        <a href="{% url 'edit_recipe' recipe.id %}">
-                            <button class="edit">Edit</button>
-                        </a>
-                        <a href="{% url 'delete_recipe' recipe.id %}">
-                            <button class="delete">Delete</button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+    <div class="container mt-4">
+        <header class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Known Diffs</h1>
+            <a href="{% url 'create_known_diff' %}" class="btn btn-success">Add Known Diff</a>
+        </header>   
+        <!-- Listing Table -->
+        {% if known_diffs %}
+            <table>
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Diff Name</th>
+                        <th>Rule ID</th>
+                        <th>Raised By</th>
+                        <th>Satus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for diff in known_diffs %}
+                        <tr>
+                            <td>{{ diff.id }}</td>
+                            <td>{{ diff.diff_name }}</td>
+                            <td>{{ diff.rule_id }}</td>
+                            <td>{{ diff.created_by_name }}</td>
+                            <td>
+                                {% if diff.is_active == 0 %}
+                                    Pending
+                                {% elif diff.is_active == 1 %}
+                                    Approved
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h3 style="text-align: center;">No records found.</h3>
+        {% endif %}
     </div>
-    <script>
-        // go_to_top_button.js
-        function goToTop() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-
-        // Show/hide the button based on the scroll position
-        window.onscroll = function() {
-            scrollFunction();
-        };
-
-        function scrollFunction() {
-            var btn = document.getElementById("goToTopBtn");
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                btn.style.display = "block";
-            } else {
-                btn.style.display = "none";
-            }
-        }
-    </script>
 </body>
 </html>

@@ -6,9 +6,9 @@ from account.models import Users
 class KnownDiff(models.Model):
     diff_name = models.CharField(max_length=200)
     rule_id = models.CharField(max_length=10)
-    description = models.JSONField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     diff_url = models.URLField(blank=True, null=True)
-    diff_data = models.JSONField(blank=True, null=True)
+    diff_data = models.TextField(blank=True, null=True)
     diff_image = models.URLField(blank=True, null=True)
 
     created_by = models.ForeignKey(

@@ -1,7 +1,9 @@
 import datetime
+import json
 
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect
+from django.db.models import Q, F
 
 from diff_patterns.models import KnownDiff
 from .forms import CreateKnownDiffModalForm
@@ -13,14 +15,20 @@ class ListKnownDiffAPIView(APIView):
     template_name = 'list_known_diff.html'
 
     def get(self, request):
-        knwon_diffs = list(KnownDiff.objects.filter(raised_by=request.user, is_active=True).values())
-        return render(request, self.template_name, {"knwon_diffs": knwon_diffs})
+        known_diffs = list(
+            KnownDiff.objects.filter(~Q(is_active=3)).annotate(
+                created_by_name=F("created_by__username")
+            ).values(
+                "id", "created_by_name",
+                "is_active", "rule_id", "diff_name"
+            )
+        )
+        return render(request, self.template_name, {"known_diffs": known_diffs})
 
 
 class CreateKnownDiffAPIView(APIView):
     permission_classes = [UserAuthentication]
     template_name = 'create_known_diff.html'
-    # template_name = 'login.html'
 
     def get(self, request):
         form = CreateKnownDiffModalForm()
@@ -66,6 +74,15 @@ class CreateKnownDiffAPIView(APIView):
 
 #     def get(self, request, pk):
 #         recipe_obj = Recipe.objects.filter(id=pk).first()
+
+        # for known_diff in known_diffs:
+        #     if known_diff.get("description"):
+        #         known_diff["description"] = json.loads(known_diff["description"])
+        #     if known_diff.get("diff_data"):
+        #         known_diff["diff_data"] = json.loads(known_diff["diff_data"])
+        # print("#"*100)
+        # print(known_diffs)
+        # print("#"*100)
 #         return render(request, self.template_name, {"recipe_obj": recipe_obj})
 
 
