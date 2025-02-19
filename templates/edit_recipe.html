@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="demo-page">
+        <main class="demo-page-content">  
+          <section>
+            <h1 style="text-align: center; font-weight: 500;">Update Recipe</h1>
+
+        <form action="{% url 'edit_recipe' recipe_obj.id %}" method="post" class="login-form">
+            {% csrf_token %}
+            <div class="nice-form-group">
+                <label>Title</label>
+                <input value="{% if recipe_obj.title %}{{recipe_obj.title}}{% endif %}"
+                name="title" type="text" placeholder="Title" required/>
+            </div>
+            <div class="nice-form-group">
+                <label>Ingredients</label>
+                <input value="{% if recipe_obj.ingredients %}{{recipe_obj.ingredients}}{% endif %}"
+                name="ingredients" type="text" placeholder="Ingredients" required/>
+            </div>
+
+            <div class="nice-form-group">
+                <label>Instructions</label>
+                <input value="{% if recipe_obj.instructions %}{{recipe_obj.instructions}}{% endif %}"
+                name="instructions" type="text" placeholder="Instructions" required/>
+            </div>
+            <div class="nice-form-group">
+                <label>Preparation Time(in hrs)</label>
+                <input style="width: 100%;" value="{% if recipe_obj.prep_time %}{{recipe_obj.prep_time}}{% endif %}"
+                name="prep_time" type="number" placeholder="Preparation Time(in hrs)" required/>
+            </div>
+            <div class="nice-form-group">
+                <label>Meal Type</label>
+                <select id="dropdown" name="meal_type">
+                    <option value="vegetarian" {% if recipe_obj.meal_type == "vegetarian"%}selected{% endif %}>Vegetarian</option>
+                    <option value="non_vegetarian" {% if recipe_obj.meal_type == "non_vegetarian"%}selected{% endif %}>Non-Vegetarian</option>
+                </select>
+            </div>
+            <details>
+              <summary>
+                    <button style="border: 1px solid black;" class="toggle-code" type="submit">Update Recipe</button>
+                    <button style="border: 1px solid black; margin-left: 10px; background-color: whitesmoke; width: 90px;" class="toggle-code">
+                        <a style="text-decoration: none; color: black;" href="{% url 'list_recipe' %}">Cancel</a>
+                    </button>
+            </summary>
+            </details>
+        </form>
+    </section>
+        </main>
+      </div>
+</body>
+</html>

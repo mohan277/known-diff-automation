@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f0e7;
+            margin: 0;
+            padding: 150px 10px 10px;
+        }
+        header {
+            background-color: #f3f0e7;
+            color: black;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            position: fixed;
+            top: 0;
+            bottom: 10;
+            width: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin: 0 15px;
+            display: inline;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 10px;
+            transition: transform 0.3s;
+            width: 50%;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card h2 {
+            margin-top: 0;
+            margin-bottom: 0px;
+            color: #333;
+        }
+
+        .card p {
+            color: #666;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 3px;
+        }
+
+        .crud-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+        }
+
+        .crud-buttons button {
+            padding: 8px;
+            margin-right: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .crud-buttons button.edit {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .crud-buttons button.delete {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        .crud-buttons button.green {
+            background-color: #04AA6D;
+            color: #fff;
+            padding: 10px;
+        }
+        .crud-buttons button.grey {
+            background-color: #6C757D;
+            color: #fff;
+            padding: 10px;
+        }
+        .heading {
+            padding-left: 20px;
+        }
+
+        .create-button {
+            background-color: #3ce76f;
+            padding: 8px;
+            margin-right: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .create-button a {
+            color: #fff;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        #goToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 200px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        #goToTopBtn:hover {
+            background-color: #0056b3;
+        }
+        .logout-button{
+            float: right;
+            margin-right: 100px;
+            margin-top: -104px;            
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid black;
+            width: 70px;
+            cursor: pointer;
+            background-color: #f3f0e7;
+        }
+
+    </style>
+</head>
+<body>
+    <button onclick="goToTop()" id="goToTopBtn" title="Go to Top">Top</button>
+    <header>
+        <h1>Known Diffs</h1>
+        <nav>
+            <ul>
+                <li style="display: flex; justify-content: space-between;">
+                    <div class="crud-buttons" style="margin-right: 10px;">
+                        <a href="{% url 'create_known_diff' %}">
+                            <button class="green" style="width: 125px;">Add Known Diff</button>
+                        </a>
+                    </div>
+                    <!-- <div class="crud-buttons" style="margin-left: 10px;">
+                        <a href="{% url 'dashboard' %}">
+                            <button class="grey" >Go to Dashboard</button>
+                        </a>
+                    </div> -->
+                </li>
+            </ul>
+        </nav>
+        <a href="{% url 'logout' %}"><button class="logout-button">Logout</button></a>
+    </header>
+    <div class="cards">
+        {% for recipe in recipes %}
+            <div class="card">
+                <div class="card-content">
+                    <h2>{{recipe.title}}</h2>
+                    <p>
+                        <strong>Meal Type: </strong>
+                        {% if recipe.meal_type == "vegetarian" %}
+                            Vegetarian
+                        {% else %}
+                            Non Vegetarian
+                        {% endif %}
+                    </p>
+                    <p><strong>Preparation Time(in hrs): </strong>{{recipe.prep_time}} hrs</p>
+                    <div class="crud-buttons">
+                        <a href="{% url 'detail_recipe' recipe.id %}">
+                            <button class="read">Read</button>
+                        </a>
+                        <a href="{% url 'edit_recipe' recipe.id %}">
+                            <button class="edit">Edit</button>
+                        </a>
+                        <a href="{% url 'delete_recipe' recipe.id %}">
+                            <button class="delete">Delete</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        // go_to_top_button.js
+        function goToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        // Show/hide the button based on the scroll position
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            var btn = document.getElementById("goToTopBtn");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

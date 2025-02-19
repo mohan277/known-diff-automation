@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f0e7;
+            margin: 0;
+            padding: 150px 10px 10px;
+        }
+        header {
+            background-color: #f3f0e7;
+            color: black;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            position: fixed;
+            top: 0;
+            bottom: 10;
+            width: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav li {
+            margin: 0 15px;
+            display: inline;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .crud-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 10px;
+        }
+        .crud-buttons button {
+            padding: 8px;
+            margin-right: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+        .crud-buttons button.green {
+            background-color: #04AA6D;
+            color: #fff;
+            padding: 10px;
+        }
+        .logout-button{
+            float: right;
+            margin-right: 100px;
+            margin-top: -104px;            
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid black;
+            width: 70px;
+            cursor: pointer;
+            background-color: #f3f0e7;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+        <nav>
+            <ul>
+                {% if chart_data.veg_percentage or chart_data.non_veg_percentage %}
+                    <div class="crud-buttons">
+                        <a href="{% url 'list_recipe' %}">
+                            <button class="green">My Recipes</button>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="crud-buttons" style="margin-right: 10px;">
+                        <a href="{% url 'create_recipe' %}">
+                            <button class="green" style="width: 125px;">Add Recipe</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </ul>
+        </nav>
+        <a href="{% url 'logout' %}"><button class="logout-button">Logout</button></a>
+    </header>
+    {% if chart_data.veg_percentage or chart_data.non_veg_percentage %}
+        <div id="piechart" data-chart-data='[["Recipes", "Meal"], ["Vegetarian", {{chart_data.veg_percentage}}], ["Non Vegetarian", {{chart_data.non_veg_percentage}}]]' style="display: flex; justify-content: center;"></div>
+    {% else %}
+        <h1 style="text-align: center; margin-top: 100px; color: #6C757D;">No data, Add Recipes</h1>
+    {% endif %}
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        // Load google charts
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(function() {
+            // Get chart data from the div's data attribute
+            var chartDataString = document.getElementById('piechart').getAttribute('data-chart-data');
+
+            // No need to parse if already a valid JSON string
+            var chartData = JSON.parse(chartDataString);
+            
+            // Draw the chart
+            drawChart(chartData);
+        });
+
+        function drawChart(data) {
+            var dataTable = google.visualization.arrayToDataTable(data);
+
+            var colors = ['green', 'red'];
+            // Optional; add a title and set the width and height of the chart
+            var options = {'title':'Recipes', 'width':500, 'height':300, 'colors': colors};
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(dataTable, options);
+        }
+    </script>
+</body>
+</html>
+
