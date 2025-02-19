@@ -590,7 +590,7 @@ body {
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  max-width: 55em;
+  /* max-width: 55em; */
 }
 
 .demo-page .demo-page-navigation {

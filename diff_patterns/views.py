@@ -34,17 +34,31 @@ class CreateKnownDiffAPIView(APIView):
         form = CreateKnownDiffModalForm()
         return render(request, self.template_name, {"known_diff_form": form})
 
-    # def post(self, request):
-    #     form = CreateKnownDiffModalForm(request.POST)
-    #     if form.is_valid():
-    #         form_data = form.cleaned_data
-    #         KnownDiff.objects.create(
-    #             author=request.user,
-    #             **form_data
-    #         )
-    #         return redirect('list_recipe')
-    #     else:
-    #         return render(request, self.template_name, {'recipe_form': form})
+    def post(self, request):
+        form = CreateKnownDiffModalForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            description = json.dumps({
+                "issue_description": form_data.get("issue_description"),
+                "behaviour1": form_data.get("behaviour1"),
+                "behaviour2": form_data.get("behaviour2"),
+                "fb": form_data.get("fb"),
+                "model_mapping": form_data.get("model_mapping")
+            })
+
+            # creating Known Diff
+            KnownDiff.objects.create(
+                diff_name=form_data.get("diff_name"),
+                rule_id=form_data.get("rule_id"),
+                diff_url=form_data.get("diff_url"),
+                raised_by=form_data.get("raised_by"),
+                assigned_to=form_data.get("assigned_to"),
+                description=description,
+                created_by=request.user
+            )
+            return redirect('list_known_diff')
+        else:
+            return render(request, self.template_name, {'known_diff_form': form})
 
 
 # class EditRecipeAPIView(APIView):

@@ -10,81 +10,87 @@
 </head>
 <body>
     <div class="demo-page">
-        <main class="demo-page-content">  
-          <section>
-            <h1 style="text-align: center; font-weight: 500;">Create Known Diff</h1>
+        <main class="demo-page-content">
+            <section>
+                <h1 style="text-align: center; font-weight: 500;">Create Known Diff</h1>
 
-        <form action="{% url 'create_known_diff' %}" method="post" class="login-form">
-            <!-- {{known_diff_form.as_p}} -->
-            {% csrf_token %}
-            
-            <!-- diff_data
-            diff_image
-            raised_by
-            assigned_to
-            approved_by -->
-            <div class="nice-form-group">
-                <label>Diff Name</label>
-                <input value="{% if known_diff_form.diff_name.value %}{{known_diff_form.diff_name.value}}{% endif %}"
-                name="diff_name" type="text" placeholder="Diff Name" required/>
-            </div>
-            <div class="nice-form-group">
-                <label>Rule ID</label>
-                <input value="{% if known_diff_form.rule_id.value %}{{known_diff_form.rule_id.value}}{% endif %}"
-                name="rule_id" type="text" placeholder="rule id" required/>
-            </div>
-            <div class="nice-form-group">
-                <label>Chimera url</label>
-                <input value="{% if known_diff_form.diff_url.value %}{{known_diff_form.diff_url.value}}{% endif %}"
-                name="diff_url" type="text" placeholder="Chimera url" required/>
-            </div>
-            <div class="nice-form-group">
-                <label>Select the Assignee:</label>
-                <select name="assigned_to" id="assigned_to">
-                    <option value="">{{ known_diff_form.assigned_to.empty_label }}</option>
-                    {% for user in known_diff_form.fields.assigned_to.queryset %}
-                        <option value="{{ user.id }}">{{ user.username }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <!-- <div class="nice-form-group">
-                <label>Assigned To</label>
-                <input value="{% if known_diff_form.assigned_to.value %}{{known_diff_form.assigned_to}}{% endif %}"
-                name="assigned_to" type="text" placeholder="Assigned To" required/>
-            </div> -->
-            
-            
+                <form action="{% url 'create_known_diff' %}" method="post" class="login-form">
+                    {% csrf_token %}
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="nice-form-group" style="width: 50%; padding-right: 10px;">
+                            <label>Diff Name</label>
+                            <input value="{% if known_diff_form.diff_name.value %}{{known_diff_form.diff_name.value}}{% endif %}"
+                            name="diff_name" type="text" placeholder="Diff Name" required/>
+                        </div>
+                        <div class="nice-form-group" style="width: 50%; padding-left: 10px;">
+                            <label>Rule ID</label>
+                            <input value="{% if known_diff_form.rule_id.value %}{{known_diff_form.rule_id.value}}{% endif %}"
+                            name="rule_id" type="text" placeholder="rule id" required/>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="nice-form-group" style="width: 50%; padding-right: 10px;">
+                            <label>Raised by:</label>
+                            <select name="raised_by" id="raised_by">
+                                <option value="">{{ known_diff_form.raised_by.empty_label }}</option>
+                                {% for user in known_diff_form.fields.raised_by.queryset %}
+                                    <option value="{{ user.id }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="nice-form-group" style="width: 50%; padding-left: 10px;">
+                            <label>Assignee:</label>
+                            <select name="assigned_to" id="assigned_to">
+                                <option value="">{{ known_diff_form.assigned_to.empty_label }}</option>
+                                {% for user in known_diff_form.fields.assigned_to.queryset %}
+                                    <option value="{{ user.id }}">{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="nice-form-group">
+                        <label>Chimera url</label>
+                        <input value="{% if known_diff_form.diff_url.value %}{{known_diff_form.diff_url.value}}{% endif %}"
+                        name="diff_url" type="text" placeholder="Chimera url" required/>
+                    </div>
+                    <div class="nice-form-group">
+                        <h1 style="text-align: center;">Description</h1>
+                        <label>What's the issue?</label>
+                        <input value="{% if known_diff_form.issue_description.value %}{{known_diff_form.issue_description.value}}{% endif %}"
+                        name="issue_description" type="text" placeholder="Enter What's the issue?"/>
+                        
+                        <label style="padding-top: 5px;">1.0 Behaviour</label>
+                        <input value="{% if known_diff_form.behaviour1.value %}{{known_diff_form.behaviour1.value}}{% endif %}"
+                        name="behaviour1" type="text" placeholder="Enter 1.0 Behaviour"/>
+                        
+                        <label style="padding-top: 5px;">2.0 Behaviour</label>
+                        <input value="{% if known_diff_form.behaviour2.value %}{{known_diff_form.behaviour2.value}}{% endif %}"
+                        name="behaviour2" type="text" placeholder="Enter 2.0 Behaviour"/>
 
+                        <div style="display: flex; justify-content: space-between;">
+                            <div class="nice-form-group" style="width: 50%; padding-right: 10px;">
 
-            <!-- <div class="nice-form-group">
-                <label>Preparation Time(in hrs)</label>
-                <input style="width: 100%;" value="{% if known_diff_form.prep_time.value %}{{known_diff_form.prep_time.value}}{% endif %}"
-                name="prep_time" type="number" placeholder="Preparation Time(in hrs)" required/>
-            </div>
-
-            <div class="nice-form-group">
-                <label>Description</label>
-                <input style="width: 100%;" value="{% if known_diff_form.description.value %}{{known_diff_form.description.value}}{% endif %}"
-                name="description" type="number" placeholder="Description" required/>
-            </div>
-            
-            <div class="nice-form-group">
-                <label>Meal Type</label>
-                <select id="dropdown" name="meal_type">
-                    <option value="vegetarian">Vegetarian</option>
-                    <option value="non_vegetarian">Non-Vegetarian</option>
-                </select>
-            </div> -->
-            <details>
-              <summary>
-                    <button style="border: 1px solid black;" class="toggle-code" type="submit">Create Recipe</button>
-                    <button style="border: 1px solid black; margin-left: 10px; background-color: whitesmoke; width: 90px;" class="toggle-code">
-                        <a style="text-decoration: none; color: black;" href="{% url 'list_known_diff' %}">Cancel</a></button>
-              </summary>
-            </details>
-        </form>
-    </section>
+                                <label style="padding-top: 5px;">FB</label>
+                                <input value="{% if known_diff_form.fb.value %}{{known_diff_form.behaviour2.value}}{% endif %}"
+                                name="fb" type="text" placeholder="Enter FB"/>
+                            </div>
+                            <div class="nice-form-group" style="width: 50%; padding-left: 10px;">
+                                <label style="padding-top: 5px;">Model Mapping</label>
+                                <input value="{% if known_diff_form.model_mapping.value %}{{known_diff_form.model_mapping.value}}{% endif %}"
+                                name="model_mapping" type="text" placeholder="Enter Model Mapping"/>
+                            </div>
+                        </div>
+                    </div>
+                    <details>
+                        <summary>
+                                <button style="border: 1px solid black;" class="toggle-code" type="submit">Create Known Diff</button>
+                                <button style="border: 1px solid black; margin-left: 10px; background-color: whitesmoke; width: 113px;" class="toggle-code">
+                                    <a style="text-decoration: none; color: black;" href="{% url 'list_known_diff' %}">Cancel</a></button>
+                        </summary>
+                    </details>
+                </form>
+            </section>
         </main>
-      </div>
+    </div>
 </body>
 </html>
