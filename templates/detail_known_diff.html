@@ -99,7 +99,7 @@
 <body>
     <div class="card">
         <div class="card-content">
-            <h2 style="text-align: center;">Known Diff Details</h2>
+            <h2 style="text-align: center; color: #004400;">Known Diff Details</h2>
             <div class="action-buttons">
                 <!-- Edit Button -->
                 <a href="{% url 'edit_known_diff' known_diff_details.id %}" class="btn btn-primary" title="Edit">
@@ -111,7 +111,7 @@
                     <i class="fa fa-trash"></i>
                 </a>
                 <!-- Back Button -->
-                <a href="{% url 'list_known_diff' %}?per_page=2" class="btn btn-secondary" title="Back">
+                <a href="{% url 'list_known_diff' %}?per_page=10" class="btn btn-secondary" title="Back">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </div>
@@ -134,7 +134,7 @@
                         <td>{{known_diff_details.assigned_to_name}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">Chimera url</td>
+                        <td class="first-col">Diff url</td>
                         <td>{{known_diff_details.diff_url}}</td>
                     </tr>
                     <tr>

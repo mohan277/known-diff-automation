@@ -75,6 +75,7 @@ class EditKnownDiffAPIView(APIView):
     template_name = 'edit_known_diff.html'
 
     def get(self, request, pk):
+        print("bjncjsncjscns", pk)
         form = CreateKnownDiffModalForm()
         known_diff = KnownDiff.objects.filter(
             ~Q(is_active=3), id=pk
@@ -149,10 +150,12 @@ class DetailKnownDiffAPIView(APIView):
         return render(request, self.template_name, {"known_diff_details": known_diff_details})
 
 
-# class DeleteRecipeAPIView(APIView):
-#     permission_classes = [UserAuthentication]
+class DeleteKnownDiffAPIView(APIView):
+    permission_classes = [UserAuthentication]
 
-#     def get(self, request, pk):
-#         user = request.user
-#         Recipe.objects.filter(id=pk, author=user).update(is_active=False)
-#         return redirect('list_recipe')
+    def get(self, request, pk):
+        user = request.user
+        KnownDiff.objects.filter(id=pk, created_by=user).update(
+            is_active=False, updated_at=datetime.datetime.now()
+        )
+        return redirect('list_known_diff')
