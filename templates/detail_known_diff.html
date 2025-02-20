@@ -59,6 +59,8 @@
             width: 20%;
             text-align: left;
             font-weight: bold;
+            color: #004400;
+            background-color: #FFFFDF;
         }   
         .action-buttons {
             margin-top: 20px;
@@ -109,50 +111,50 @@
                     <i class="fa fa-trash"></i>
                 </a>
                 <!-- Back Button -->
-                <a href="{% url 'list_known_diff' %}" class="btn btn-secondary" title="Back">
+                <a href="{% url 'list_known_diff' %}?per_page=2" class="btn btn-secondary" title="Back">
                     <i class="fa fa-arrow-left"></i>
                 </a>
             </div>
             <table>
                 <tbody>
                     <tr>
-                        <td class="first-col">Diff Name:</td>
+                        <td class="first-col">Diff Name</td>
                         <td>{{known_diff_details.diff_name}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">Rule ID:</td>
+                        <td class="first-col">Rule ID</td>
                         <td>{{known_diff_details.rule_id}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">Raised By:</td>
+                        <td class="first-col">Raised By</td>
                         <td>{{known_diff_details.raised_by_name}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">Assignee:</td>
+                        <td class="first-col">Assignee</td>
                         <td>{{known_diff_details.assigned_to_name}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">Chimera url:</td>
+                        <td class="first-col">Chimera url</td>
                         <td>{{known_diff_details.diff_url}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">What's the issue?:</td>
+                        <td class="first-col">What's the issue?</td>
                         <td>{{known_diff_details.issue_description}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">1.0 Behaviour:</td>
+                        <td class="first-col">1.0 Behaviour</td>
                         <td>{{known_diff_details.behaviour1}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">2.0 Behaviour:</td>
+                        <td class="first-col">2.0 Behaviour</td>
                         <td>{{known_diff_details.behaviour2}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">FB:</td>
+                        <td class="first-col">FB</td>
                         <td>{{known_diff_details.fb}}</td>
                     </tr>
                     <tr>
-                        <td class="first-col">Model Mapping:</td>
+                        <td class="first-col">Model Mapping</td>
                         <td>{{known_diff_details.model_mapping}}</td>
                     </tr>
                 </tbody>
