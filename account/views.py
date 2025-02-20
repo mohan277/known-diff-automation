@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password
 
 from .models import Users
-# from recipes.models import Recipe
 from .forms import LoginModalForm, SignUpModalForm
 from core.api_permissions import UserAuthentication
 from core.encryption import jwt_encode_handler, jwt_payload_handler
@@ -28,7 +27,7 @@ class LoginAPIView(APIView):
                 # Generate a JWT token with the user ID as the payload
                 token = jwt_encode_handler((jwt_payload_handler(user)))
                 # Store the token in a cookie or local storage
-                response = redirect('create_known_diff')
+                response = redirect('list_known_diff')
                 response.set_cookie("token", token)
                 return response
         else:

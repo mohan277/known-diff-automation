@@ -4,6 +4,7 @@ import json
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect
 from django.db.models import Q, F
+from django.core.paginator import Paginator
 
 from diff_patterns.models import KnownDiff
 from .forms import CreateKnownDiffModalForm
@@ -21,10 +22,17 @@ class ListKnownDiffAPIView(APIView):
                 assigned_to_name=F("assigned_to__username")
             ).values(
                 "id", "created_by_name", "assigned_to_name",
-                "is_active", "rule_id", "diff_name"
+                "is_active", "rule_id", "diff_name", "created_at"
             )
         )
-        return render(request, self.template_name, {"known_diffs": known_diffs})
+        # Number of objects per page
+        per_page = request.GET.get('per_page', 10)  # Default is 10 if no per_page is specified
+        paginator = Paginator(known_diffs, per_page)
+
+        # Get the current page number from the request
+        page_number = request.GET.get('page')
+        known_diffs = paginator.get_page(page_number)
+        return render(request, self.template_name, {"known_diffs": known_diffs, 'per_page': per_page})
 
 
 class CreateKnownDiffAPIView(APIView):
